@@ -35,16 +35,18 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(ai_msgs REQUIRED)
 find_package(robot_pick_obj_msg REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 include_directories(include
   /usr/include
-  /usr/include/python3.8
+  /usr/include/python3.10
 )
 
 add_executable(tonypi_obj_grasp_control src/target_grasp_control.cpp)
 
 target_link_libraries(tonypi_obj_grasp_control
-  python3.8
+  python3.10
+  Eigen3::Eigen
 )
 
 ament_target_dependencies(

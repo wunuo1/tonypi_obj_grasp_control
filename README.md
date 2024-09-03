@@ -10,21 +10,34 @@ This package controls the robot to grasp objects by receiving messages from the 
 1. Have a TonyPi robot, including the robot body, camera, and RDK suite, and ensure it runs normally.
 2. Prepare relevant props such as small balls.
 
-## Install the Package
+## Compile and Runs
 
-**1. Install the package**
+**1. Compile**
 
-After starting the robot, connect to the robot through terminal SSH or VNC, click the "One-click Deployment" button at the top right of this page, copy the following command to run on the RDK system to complete the installation of the relevant Node.
+After starting the robot, connect to it via SSH or VNC on the terminal, open the terminal, pull the corresponding code, and compile and install it.
 
 ```bash
-sudo apt update
-sudo apt install libeigen3-dev
-sudo apt install -y tros-tonypi-obj-grasp-control
+# Pull and install the robot SDK
+mkdir -p /home/pi && cd /home/pi
+git clone https://github.com/wunuo1/TonyPi.git -b feature-humble-x5
+cd /home/pi/TonyPi/HiwonderSDK
+pip install .
+
+# Pull grab control code, control message code, and task disassembly code
+mkdir -p ~/tonypi_ws/src && cd ~/tonypi_ws/src
+git clone https://github.com/wunuo1/tonypi_obj_grasp_control.git -b feature-humble-x5
+git clone https://github.com/wunuo1/robot_pick_obj_msg.git
+git clone https://github.com/wunuo1/hobot_awareness.git
+
+# Compile
+cd ..
+source /opt/tros/setup.bash
+colcon build
 ```
 **2. Run the Task Decomposition Function**
 
 ```shell
-source /opt/tros/local_setup.bash
+source ~/tonypi_ws/install/setup.bash
 
 # Grasping with fixed relative position
 ros2 launch tonypi_obj_grasp_control target_grasp_control.launch.py task_input:=False fixed_rel_pos:=True target_type:=red_ball task_type:=catch
